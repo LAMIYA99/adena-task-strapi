@@ -27,12 +27,16 @@ const CART_PANEL = document.getElementById("cartPanel");
 const CART_OVERLAY = document.getElementById("cartOverlay");
 const CART_CLOSE = document.getElementById("cartClose");
 
-FIRST_GRID_BTN.addEventListener("click", () => setGrid(FIRST_GRID_BTN, 2));
-SECOND_GRID_BTN.addEventListener("click", () => setGrid(SECOND_GRID_BTN, 3));
-THIRD_GRID_BTN.addEventListener("click", () => setGrid(THIRD_GRID_BTN, 4));
-FORTH_GRID_BTN.addEventListener("click", () => setGrid(FORTH_GRID_BTN, 1));
-CART_OVERLAY?.addEventListener("click", closeCartDrawer);
-CART_CLOSE?.addEventListener("click", closeCartDrawer);
+FIRST_GRID_BTN &&
+  FIRST_GRID_BTN.addEventListener("click", () => setGrid(FIRST_GRID_BTN, 2));
+SECOND_GRID_BTN &&
+  SECOND_GRID_BTN.addEventListener("click", () => setGrid(SECOND_GRID_BTN, 3));
+THIRD_GRID_BTN &&
+  THIRD_GRID_BTN.addEventListener("click", () => setGrid(THIRD_GRID_BTN, 4));
+FORTH_GRID_BTN &&
+  FORTH_GRID_BTN.addEventListener("click", () => setGrid(FORTH_GRID_BTN, 1));
+CART_OVERLAY && CART_OVERLAY?.addEventListener("click", closeCartDrawer);
+CART_CLOSE && CART_CLOSE?.addEventListener("click", closeCartDrawer);
 
 function applyListMode(isList) {
   const cards = PRODUCT_LIST_HTML.querySelectorAll(".cards");
@@ -81,14 +85,16 @@ function setActiveBtn(btn) {
 }
 
 function setGrid(btn, cols) {
-  PRODUCT_LIST_HTML.classList.remove(...ALL_GRID_CLASSES, ...FLEX_CLASSES);
+  PRODUCT_LIST_HTML &&
+    PRODUCT_LIST_HTML.classList.remove(...ALL_GRID_CLASSES, ...FLEX_CLASSES);
 
   if (cols === 1) {
-    PRODUCT_LIST_HTML.classList.add(...FLEX_CLASSES);
+    PRODUCT_LIST_HTML && PRODUCT_LIST_HTML.classList.add(...FLEX_CLASSES);
     setActiveBtn(btn);
     applyListMode(true);
   } else {
-    PRODUCT_LIST_HTML.classList.add("grid", `grid-cols-${cols}`, "gap-6");
+    PRODUCT_LIST_HTML &&
+      PRODUCT_LIST_HTML.classList.add("grid", `grid-cols-${cols}`, "gap-6");
     setActiveBtn(btn);
     applyListMode(false);
   }
@@ -154,15 +160,16 @@ const productsRender = (query = "") => {
       )
       .join("");
 
-    PRODUCT_LIST_HTML.innerHTML = renderHtml;
+    PRODUCT_LIST_HTML && (PRODUCT_LIST_HTML.innerHTML = renderHtml);
 
     if (!window.__bagOpenBinded) {
-      PRODUCT_LIST_HTML.addEventListener("click", (e) => {
-        const btn = e.target.closest("button");
-        if (btn && btn.querySelector(".ri-shopping-bag-2-line")) {
-          openCartDrawer();
-        }
-      });
+      PRODUCT_LIST_HTML &&
+        PRODUCT_LIST_HTML.addEventListener("click", (e) => {
+          const btn = e.target.closest("button");
+          if (btn && btn.querySelector(".ri-shopping-bag-2-line")) {
+            openCartDrawer();
+          }
+        });
       window.__bagOpenBinded = true;
     }
 
@@ -209,14 +216,15 @@ const collections = () => {
         </div>`
       )
       .join("");
-    COLLECTION_LISTS.innerHTML = collectionRender;
+    COLLECTION_LISTS && (COLLECTION_LISTS.innerHTML = collectionRender);
 
-    COLLECTION_LISTS.addEventListener("click", (e) => {
-      const target = e.target.closest("[data-id]");
-      if (!target) return;
-      const id = target.dataset.id;
-      productsRender(`&filters[collection][id][$eq]=${id}`);
-    });
+    COLLECTION_LISTS &&
+      COLLECTION_LISTS.addEventListener("click", (e) => {
+        const target = e.target.closest("[data-id]");
+        if (!target) return;
+        const id = target.dataset.id;
+        productsRender(`&filters[collection][id][$eq]=${id}`);
+      });
   });
 };
 
@@ -232,14 +240,15 @@ const Availability = () => {
         </div>`
       )
       .join("");
-    AVAILABILITY_LIST.innerHTML = availabilityRender;
+    AVAILABILITY_LIST && (AVAILABILITY_LIST.innerHTML = availabilityRender);
 
-    AVAILABILITY_LIST.addEventListener("click", (e) => {
-      const target = e.target.closest("[data-id]");
-      if (!target) return;
-      const id = target.dataset.id;
-      productsRender(`&filters[stock][id][$eq]=${id}`);
-    });
+    AVAILABILITY_LIST &&
+      AVAILABILITY_LIST.addEventListener("click", (e) => {
+        const target = e.target.closest("[data-id]");
+        if (!target) return;
+        const id = target.dataset.id;
+        productsRender(`&filters[stock][id][$eq]=${id}`);
+      });
   });
 };
 
@@ -255,14 +264,16 @@ const Colors = () => {
         ></li>`
       )
       .join("");
-    COLOR_LISTS.innerHTML = `<ul class="flex items-center gap-1.5">${colorsRender}</ul>`;
+    COLOR_LISTS &&
+      (COLOR_LISTS.innerHTML = `<ul class="flex items-center gap-1.5">${colorsRender}</ul>`);
 
-    COLOR_LISTS.addEventListener("click", (e) => {
-      const target = e.target.closest("[data-id]");
-      if (!target) return;
-      const id = target.dataset.id;
-      productsRender(`&filters[colors][id][$eq]=${id}`);
-    });
+    COLOR_LISTS &&
+      COLOR_LISTS.addEventListener("click", (e) => {
+        const target = e.target.closest("[data-id]");
+        if (!target) return;
+        const id = target.dataset.id;
+        productsRender(`&filters[colors][id][$eq]=${id}`);
+      });
   });
 };
 
@@ -278,14 +289,15 @@ const Sizes = () => {
           </button>`
       )
       .join("");
-    SIZE_LISTS.innerHTML = sizeRender;
+    SIZE_LISTS && (SIZE_LISTS.innerHTML = sizeRender);
 
-    SIZE_LISTS.addEventListener("click", (e) => {
-      const target = e.target.closest("[data-id]");
-      if (!target) return;
-      const id = target.dataset.id;
-      productsRender(`&filters[sizes][id][$eq]=${id}`);
-    });
+    SIZE_LISTS &&
+      SIZE_LISTS.addEventListener("click", (e) => {
+        const target = e.target.closest("[data-id]");
+        if (!target) return;
+        const id = target.dataset.id;
+        productsRender(`&filters[sizes][id][$eq]=${id}`);
+      });
   });
 };
 
@@ -299,17 +311,51 @@ const SUBMIT_REGISTER = document.querySelector("#submitRegister");
 const REGSITER_USERNAME = document.querySelector("#username");
 const REGSITER_EMAIL = document.querySelector("#email");
 const REGSITER_PASSWORD = document.querySelector("#password");
+const LOGIN_FORM = document.querySelector("#loginForm");
+const LOGIN_EMAIL = document.querySelector("#loginEmail");
+const LOGIN_PASSWORD = document.querySelector("#loginPassword");
 
-SUBMIT_REGISTER.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const payload = {
-    username: REGSITER_USERNAME.value,
-    email: REGSITER_EMAIL.value,
-    password: REGSITER_PASSWORD.value,
-  };
-  api.loginAuth("auth/local/register", payload).then((data) => {
-    console.log(data);
-    
+SUBMIT_REGISTER &&
+  SUBMIT_REGISTER.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const payload = {
+      username: REGSITER_USERNAME.value,
+      email: REGSITER_EMAIL.value,
+      password: REGSITER_PASSWORD.value,
+    };
+    api.loginAuth("auth/local/register", payload).then((data) => {
+      if (data?.user) {
+        setTimeout(() => {
+          window.location.href = "../login.html";
+        }, 1000);
+        Swal.fire({
+          title: "Drag me!",
+          icon: "success",
+          draggable: true,
+        });
+      }
+    });
   });
 
-});
+LOGIN_FORM &&
+  LOGIN_FORM.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const payload = {
+      identifier: LOGIN_EMAIL.value,
+      password: LOGIN_PASSWORD.value,
+    };
+    api.loginAuth("auth/local", payload).then((data) => {
+      console.log(data);
+      if (data?.user) {
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 1000);
+        localStorage.setItem("token", data?.jwt);
+        Swal.fire({
+          title: "Drag me!",
+          icon: "success",
+          draggable: true,
+        });
+      }
+    });
+  });

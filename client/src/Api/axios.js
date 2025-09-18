@@ -25,4 +25,13 @@ export default class AxiosCall {
       throw error;
     }
   }
+  async getAuth(url, payload) {
+    try {
+      const response = await this.axiosInstance.get(url, payload);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      throw error;
+    }
+  }
 }
