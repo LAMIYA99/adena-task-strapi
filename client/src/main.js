@@ -11,33 +11,58 @@ const FIRST_GRID_BTN = document.querySelector("#firstGrid");
 const SECOND_GRID_BTN = document.querySelector("#scndGrid");
 const THIRD_GRID_BTN = document.querySelector("#thirdGrid");
 const FORTH_GRID_BTN = document.querySelector("#fourtGrid");
-
-const ALL_GRID_CLASSES = ["grid", "grid-cols-2", "grid-cols-3", "grid-cols-4", "grid-cols-5", "gap-6", "gap-8"];
+const ALL_GRID_CLASSES = [
+  "grid",
+  "grid-cols-2",
+  "grid-cols-3",
+  "grid-cols-4",
+  "grid-cols-5",
+  "gap-6",
+  "gap-8",
+];
 const FLEX_CLASSES = ["flex", "flex-col", "gap-4", "md:gap-6"];
 const BTNS = [FIRST_GRID_BTN, SECOND_GRID_BTN, THIRD_GRID_BTN, FORTH_GRID_BTN];
+const CART_MODAL = document.getElementById("cartModal");
+const CART_PANEL = document.getElementById("cartPanel");
+const CART_OVERLAY = document.getElementById("cartOverlay");
+const CART_CLOSE = document.getElementById("cartClose");
+
+FIRST_GRID_BTN.addEventListener("click", () => setGrid(FIRST_GRID_BTN, 2));
+SECOND_GRID_BTN.addEventListener("click", () => setGrid(SECOND_GRID_BTN, 3));
+THIRD_GRID_BTN.addEventListener("click", () => setGrid(THIRD_GRID_BTN, 4));
+FORTH_GRID_BTN.addEventListener("click", () => setGrid(FORTH_GRID_BTN, 1));
+CART_OVERLAY?.addEventListener("click", closeCartDrawer);
+CART_CLOSE?.addEventListener("click", closeCartDrawer);
 
 function applyListMode(isList) {
   const cards = PRODUCT_LIST_HTML.querySelectorAll(".cards");
-  cards.forEach(card => {
+  cards.forEach((card) => {
     const imgWrap = card.querySelector(".img");
     const bodyWrap = card.querySelector(".mt-4");
 
     if (isList) {
-      // kartları yatay düz
       card.classList.add("md:flex", "md:items-start", "md:gap-6");
-      imgWrap?.classList.add("md:w-56", "md:shrink-0", "rounded-xl", "overflow-hidden");
+      imgWrap?.classList.add(
+        "md:w-56",
+        "md:shrink-0",
+        "rounded-xl",
+        "overflow-hidden"
+      );
       bodyWrap?.classList.add("md:mt-0", "flex-1");
     } else {
-      // grid moduna qayıt
       card.classList.remove("md:flex", "md:items-start", "md:gap-6");
-      imgWrap?.classList.remove("md:w-56", "md:shrink-0", "rounded-xl", "overflow-hidden");
+      imgWrap?.classList.remove(
+        "md:w-56",
+        "md:shrink-0",
+        "rounded-xl",
+        "overflow-hidden"
+      );
       bodyWrap?.classList.remove("md:mt-0", "flex-1");
     }
   });
 
-  // Yalnız list rejimində görünəcək mətnləri idarə et
   const listOnlyEls = PRODUCT_LIST_HTML.querySelectorAll(".list-only");
-  listOnlyEls.forEach(el => {
+  listOnlyEls.forEach((el) => {
     if (isList) {
       el.classList.remove("hidden");
     } else {
@@ -47,7 +72,7 @@ function applyListMode(isList) {
 }
 
 function setActiveBtn(btn) {
-  BTNS.forEach(b => {
+  BTNS.forEach((b) => {
     b.style.backgroundColor = "";
     b.style.color = "";
   });
@@ -56,27 +81,18 @@ function setActiveBtn(btn) {
 }
 
 function setGrid(btn, cols) {
-  // əvvəl bütün layout classlarını sil
   PRODUCT_LIST_HTML.classList.remove(...ALL_GRID_CLASSES, ...FLEX_CLASSES);
 
   if (cols === 1) {
-    // LIST VIEW (flex)
     PRODUCT_LIST_HTML.classList.add(...FLEX_CLASSES);
     setActiveBtn(btn);
     applyListMode(true);
   } else {
-    // GRID VIEW
     PRODUCT_LIST_HTML.classList.add("grid", `grid-cols-${cols}`, "gap-6");
     setActiveBtn(btn);
     applyListMode(false);
   }
 }
-
-// eventlər
-FIRST_GRID_BTN.addEventListener("click", () => setGrid(FIRST_GRID_BTN, 2));
-SECOND_GRID_BTN.addEventListener("click", () => setGrid(SECOND_GRID_BTN, 3));
-THIRD_GRID_BTN.addEventListener("click", () => setGrid(THIRD_GRID_BTN, 4));
-FORTH_GRID_BTN.addEventListener("click", () => setGrid(FORTH_GRID_BTN, 1));
 
 const productsRender = (query = "") => {
   api.getProducts(`products?populate=*${query}`).then((data) => {
@@ -89,10 +105,13 @@ const productsRender = (query = "") => {
           <div class="hover-img absolute inset-0 opacity-0 group-hover:opacity-100 duration-500">
             <img src="http://localhost:1337${item?.hoverimg?.url}" alt="">
           </div>
-          ${item?.sale ? `
+          ${
+            item?.sale
+              ? `
             <div class="sale absolute top-[20px] left-[20px] bg-[#d96e40] capitalize text-white min-w-[50px] leading-[20px] px-[10px] text-[14px]">
               <button>${item?.sale}</button>
-            </div>` : ""
+            </div>`
+              : ""
           }
           <div class="hover-icon absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-500">
             <ul class="flex items-center gap-3">
@@ -110,71 +129,73 @@ const productsRender = (query = "") => {
           </div>
           <h3 class="font-normal text-[14px]">${item?.title}</h3>
           <div class="flex items-center gap-2">
-            ${item?.price ? `<span class="text-[#d96e40] text-[14px] line-through">$${item?.price}</span>` : ""}
+            ${
+              item?.price
+                ? `<span class="text-[#d96e40] text-[14px] line-through">$${item?.price}</span>`
+                : ""
+            }
             <span class="text-black text-[14px]">$${item?.discountPrice}</span>
           </div>
           <div class="flex items-center gap-2">
-            ${item?.colors?.map(c => `
+            ${item?.colors
+              ?.map(
+                (c) => `
               <span class="w-5 h-5 rounded-full border inline-block" style="background-color:${c.code}" title="${c.Name}"></span>
-            `).join("")}
+            `
+              )
+              .join("")}
           </div>
-
-          <!-- Bu mətn yalnız LIST VIEW-də (1 ədəd olanda) görünsün -->
           <h3 class="list-only hidden text-[14px] leading-relaxed">
             Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec est imperdiet, a malesuada sem rutrum
           </h3>
         </div>
       </div>
-    `).join("");
+    `
+      )
+      .join("");
 
     PRODUCT_LIST_HTML.innerHTML = renderHtml;
 
-    // ✨ ADDED: yalnız shopping-bag düyməsinə click-də cart drawer aç (event delegation, 1 dəfə bərkidilir)
     if (!window.__bagOpenBinded) {
-      PRODUCT_LIST_HTML.addEventListener('click', (e) => {
-        const btn = e.target.closest('button');
-        if (btn && btn.querySelector('.ri-shopping-bag-2-line')) {
+      PRODUCT_LIST_HTML.addEventListener("click", (e) => {
+        const btn = e.target.closest("button");
+        if (btn && btn.querySelector(".ri-shopping-bag-2-line")) {
           openCartDrawer();
         }
       });
       window.__bagOpenBinded = true;
     }
 
-    // DEFAULT: 3 kolon (grid)
     setGrid(SECOND_GRID_BTN, 3);
   });
 };
 
 productsRender();
 
-const CART_MODAL   = document.getElementById('cartModal');
-const CART_PANEL   = document.getElementById('cartPanel');
-const CART_OVERLAY = document.getElementById('cartOverlay');
-const CART_CLOSE   = document.getElementById('cartClose');
-
 function openCartDrawer() {
   if (!CART_MODAL) return;
-  CART_MODAL.classList.remove('hidden');
+  CART_MODAL.classList.remove("hidden");
   requestAnimationFrame(() => {
-    CART_OVERLAY && CART_OVERLAY.classList.add('opacity-100');
-    CART_PANEL && CART_PANEL.classList.remove('translate-x-full');
+    CART_OVERLAY && CART_OVERLAY.classList.add("opacity-100");
+    CART_PANEL && CART_PANEL.classList.remove("translate-x-full");
   });
 }
 function closeCartDrawer() {
   if (!CART_MODAL) return;
-  CART_OVERLAY && CART_OVERLAY.classList.remove('opacity-100');
-  CART_PANEL && CART_PANEL.classList.add('translate-x-full');
-  setTimeout(() => CART_MODAL.classList.add('hidden'), 300);
+  CART_OVERLAY && CART_OVERLAY.classList.remove("opacity-100");
+  CART_PANEL && CART_PANEL.classList.add("translate-x-full");
+  setTimeout(() => CART_MODAL.classList.add("hidden"), 300);
 }
 
-CART_OVERLAY?.addEventListener('click', closeCartDrawer);
-CART_CLOSE?.addEventListener('click', closeCartDrawer);
-window.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && CART_MODAL && !CART_MODAL.classList.contains('hidden')) {
+window.addEventListener("keydown", (e) => {
+  if (
+    e.key === "Escape" &&
+    CART_MODAL &&
+    !CART_MODAL.classList.contains("hidden")
+  ) {
     closeCartDrawer();
   }
 });
-
 
 const collections = () => {
   api.getProducts("collections").then((data) => {
@@ -224,7 +245,7 @@ const Availability = () => {
 
 const Colors = () => {
   api.getProducts("colors").then((data) => {
-    console.log(data)
+    console.log(data);
     let colorsRender = data?.data
       ?.map(
         (c) => `<li
@@ -274,6 +295,21 @@ Availability();
 collections();
 productsRender();
 
+const SUBMIT_REGISTER = document.querySelector("#submitRegister");
+const REGSITER_USERNAME = document.querySelector("#username");
+const REGSITER_EMAIL = document.querySelector("#email");
+const REGSITER_PASSWORD = document.querySelector("#password");
 
+SUBMIT_REGISTER.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const payload = {
+    username: REGSITER_USERNAME.value,
+    email: REGSITER_EMAIL.value,
+    password: REGSITER_PASSWORD.value,
+  };
+  api.loginAuth("auth/local/register", payload).then((data) => {
+    console.log(data);
+    
+  });
 
-
+});

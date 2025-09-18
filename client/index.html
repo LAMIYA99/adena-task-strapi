@@ -1,211 +1,291 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Products - Jewelry Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 
-<head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Products - Jewelry Store</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" rel="stylesheet">
-  <link rel="stylesheet" href="./src/style.css">
+  </head>
 
-</head>
 
-<body class="bg-white">
-<!-- ADDED: Cart Drawer (no <aside>, pure <div>) -->
-  <div id="cartModal" class="fixed inset-0 z-[100] hidden">
-    <!-- overlay -->
-    <div id="cartOverlay" class="absolute inset-0 bg-black/40 opacity-0 transition-opacity"></div>
-  
-    <!-- panel -->
-    <div id="cartPanel"
-         class="absolute right-0 top-0 h-full w-full max-w-[420px] bg-white shadow-2xl translate-x-full transition-transform duration-300 flex flex-col">
-  
-      <!-- close -->
-      <button id="cartClose" class="absolute right-4 top-4 p-2 rounded hover:bg-gray-100" aria-label="Close">
-        <i class="ri-close-line text-xl"></i>
-      </button>
-  
-      <!-- free shipping banner -->
-      <div class="p-5 border-b">
-        <div class="rounded-md bg-[#f7f4f1] p-4">
-          <div class="flex items-center gap-2 text-[13px]">
-            <i class="ri-flashlight-fill"></i>
-            <span class="font-medium">FREE SHIPPING ON ORDERS $100.00</span>
-          </div>
-          <p id="shipMsg" class="mt-1 text-[12px] text-gray-600">Spend $40.00 more and get free shipping!</p>
-          <div class="mt-3 h-[6px] rounded-full bg-gray-200 overflow-hidden">
-            <div id="shipBar" class="h-full w-0 bg-black"></div>
+  <body class="bg-white">
+    <header class="py-8 border-t border-t-gray-200 border-b border-b-gray-200">
+      <nav
+        class="flex items-center justify-between container mx-auto max-w-[1440px] px-4"
+      >
+        <div class="left max-w-[80px]">
+          <img
+            src="https://wpbingo-adena.myshopify.com/cdn/shop/files/logo.png?crop=center&height=129&v=1729503852&width=399"
+            alt=""
+            class="w-full h-full object-cover"
+          />
+        </div>
+        <div class="mid">
+          <ul class="flex items-center gap-[40px] text-[14px] font-normal">
+            <li>Home <i class="ri-arrow-down-s-line"></i></li>
+            <li>Shop <i class="ri-arrow-down-s-line"></i></li>
+            <li>Product <i class="ri-arrow-down-s-line"></i></li>
+            <li>Blog <i class="ri-arrow-down-s-line"></i></li>
+            <li>Featured <i class="ri-arrow-down-s-line"></i></li>
+          </ul>
+        </div>
+        <div class="right">
+          <ul class="flex items-center gap-[20px] text-[20px]">
+            <li><i class="ri-search-line"></i></li>
+            <li><i class="ri-user-line"></i></li>
+            <li><i class="ri-heart-line"></i></li>
+            <li><i class="ri-shopping-bag-2-line"></i></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <div id="cartModal" class="fixed inset-0 z-[100] hidden">
+      <div
+        id="cartOverlay"
+        class="absolute inset-0 bg-black/40 opacity-0 transition-opacity"
+      ></div>
+
+      <div
+        id="cartPanel"
+        class="absolute right-0 top-0 h-full w-full max-w-[420px] bg-white shadow-2xl translate-x-full transition-transform duration-300 flex flex-col"
+      >
+        <button
+          id="cartClose"
+          class="absolute right-4 top-4 p-2 rounded hover:bg-gray-100"
+          aria-label="Close"
+        >
+          <i class="ri-close-line text-xl"></i>
+        </button>
+
+        <div class="p-5 border-b">
+          <div class="rounded-md bg-[#f7f4f1] p-4">
+            <div class="flex items-center gap-2 text-[13px]">
+              <i class="ri-flashlight-fill"></i>
+              <span class="font-medium">FREE SHIPPING ON ORDERS $100.00</span>
+            </div>
+            <p id="shipMsg" class="mt-1 text-[12px] text-gray-600">
+              Spend $40.00 more and get free shipping!
+            </p>
+            <div class="mt-3 h-[6px] rounded-full bg-gray-200 overflow-hidden">
+              <div id="shipBar" class="h-full w-0 bg-black"></div>
+            </div>
           </div>
         </div>
-      </div>
-  
-      <!-- items (demo 1 ədəd – istəsən JS-dən öz cartını render edərsən) -->
-      <div id="cartItems" class="flex-1 overflow-y-auto p-5">
-        <div class="flex gap-3">
-          <div class="w-[64px] h-[64px] rounded overflow-hidden bg-gray-100 shrink-0">
-            <img src="https://images.unsplash.com/photo-1617038260897-3a0779e7a17d?q=80&w=600&auto=format&fit=crop" alt="APOLLO COIN NECKLACE" class="w-full h-full object-cover">
-          </div>
-          <div class="flex-1">
-            <div class="flex items-start justify-between gap-2">
-              <div>
-                <h4 class="text-[13px] font-medium leading-5">APOLLO COIN NECKLACE</h4>
-                <div class="text-[12px] text-gray-500">Color: Silver</div>
+
+        <div id="cartItems" class="flex-1 overflow-y-auto p-5">
+          <div class="flex gap-3">
+            <div
+              class="w-[64px] h-[64px] rounded overflow-hidden bg-gray-100 shrink-0"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1617038260897-3a0779e7a17d?q=80&w=600&auto=format&fit=crop"
+                alt="APOLLO COIN NECKLACE"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="flex-1">
+              <div class="flex items-start justify-between gap-2">
+                <div>
+                  <h4 class="text-[13px] font-medium leading-5">
+                    APOLLO COIN NECKLACE
+                  </h4>
+                  <div class="text-[12px] text-gray-500">Color: Silver</div>
+                </div>
+                <button
+                  class="p-1 rounded hover:bg-gray-100"
+                  id="removeBtn"
+                  aria-label="Remove"
+                >
+                  <i class="ri-delete-bin-6-line text-[16px]"></i>
+                </button>
               </div>
-              <button class="p-1 rounded hover:bg-gray-100" id="removeBtn" aria-label="Remove">
-                <i class="ri-delete-bin-6-line text-[16px]"></i>
-              </button>
-            </div>
-  
-            <div class="mt-2 flex items-center gap-3">
-              <div class="inline-flex items-center border rounded" id="qtyBox" data-price="60">
-                <button class="px-2 py-1 text-[14px]" data-step="dec">–</button>
-                <span id="qty" class="px-3 select-none text-[13px]">1</span>
-                <button class="px-2 py-1 text-[14px]" data-step="inc">+</button>
-              </div>
-              <div class="ml-auto text-[13px] font-medium">$60.00</div>
-            </div>
-          </div>
-        </div>
-      </div>
-  
-      <!-- bottom -->
-      <div class="border-t p-5 space-y-4">
-        <div class="grid grid-cols-4 gap-3 text-center text-[12px]">
-          <button class="flex flex-col items-center gap-2 rounded-md border p-3 hover:bg-gray-50">
-            <i class="ri-gift-line text-lg"></i><span>Add gift wrap</span>
-          </button>
-          <button class="flex flex-col items-center gap-2 rounded-md border p-3 hover:bg-gray-50">
-            <i class="ri-edit-2-line text-lg"></i><span>Add note</span>
-          </button>
-          <button class="flex flex-col items-center gap-2 rounded-md border p-3 hover:bg-gray-50">
-            <i class="ri-coupon-2-line text-lg"></i><span>Coupon</span>
-          </button>
-          <button class="flex flex-col items-center gap-2 rounded-md border p-3 hover:bg-gray-50">
-            <i class="ri-truck-line text-lg"></i><span>Shipping</span>
-          </button>
-        </div>
-  
-        <div class="flex items-center justify-between text-[14px]">
-          <span class="text-gray-700">Subtotal:</span>
-          <span id="subtotal" class="font-medium">$60.00</span>
-        </div>
-        <p class="text-[12px] text-gray-500">Taxes and shipping calculated at checkout</p>
-  
-        <label class="flex items-start gap-2 text-[12px]">
-          <input id="agree" type="checkbox" class="mt-[3px] accent-black">
-          <span>I agree with the <a href="#" class="underline">terms and conditions</a></span>
-        </label>
-  
-        <div class="flex gap-3 pt-1">
-          <button id="checkoutBtn" class="h-11 flex-1 rounded-md bg-black text-white text-[12px] tracking-wide disabled:opacity-50">CHECK OUT</button>
-          <button class="h-11 flex-1 rounded-md border text-[12px] tracking-wide hover:bg-gray-50">VIEW CART</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- /ADDED -->
-  
 
-  <header class="bg-white border-b">
-  </header>
-
-  <main class="py-8">
-    <div class="container mx-auto max-w-[1440px] px-4">
-      <div class="mb-8">
-        <h1 class="text-4xl font-light text-center mb-4">Products</h1>
-        <div class="text-center text-sm text-gray-600">
-          <span>Home</span>
-          <span class="mx-2">/</span>
-          <span>Products</span>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-12 gap-8">
-        <div class="col-span-3">
-          <div class="pt-6">
-            <div class="space-y-3">
-              <h2
-                class="text-[24px] capitalize flex items-center justify-between"
-              >
-                Collections <i class="ri-arrow-down-s-line"></i>
-              </h2>
-              <div
-                class="flex justify-between flex-col items-start gap-2"
-                id="collectionList"
-              ></div>
-
-              <button class="text-gray-500 text-sm flex items-center mt-2">
-                + View more
-              </button>
-            </div>
-          </div>
-          <div class="pt-6">
-            <div class="space-y-3">
-              <h2
-                class="text-[24px] capitalize flex items-center justify-between"
-              >
-                Availability <i class="ri-arrow-down-s-line"></i>
-              </h2>
-              <div
-                class="flex justify-between flex-col items-start gap-2"
-                id="Availability"
-              ></div>
-            </div>
-          </div>
-          <div class="pt-6">
-            <div class="space-y-3">
-              <h2
-                class="text-[24px] capitalize flex items-center justify-between"
-              >
-                Color <i class="ri-arrow-down-s-line"></i>
-              </h2>
-              <div class="flex items-center gap-4" id="colors"></div>
-            </div>
-          </div>
-          <div class="pt-6">
-            <div class="space-y-3">
-              <h2
-                class="text-[24px] capitalize flex items-center justify-between"
-              >
-                Size <i class="ri-arrow-down-s-line"></i>
-              </h2>
-              <div class="flex items-center gap-4" id="sizes"></div>
-            </div>
-          </div>
-        </div>
-        <div class="col-span-12 lg:col-span-9">
-          <div class="flex items-center justify-between mb-6">
-            <div class="flex items-center gap-4">
-              <div class="bg-gray-100 px-3 py-1 rounded text-sm flex items-center gap-2">
-                $0.00-$86.00
-                <i class="ri-close-line cursor-pointer"></i>
-              </div>
-              <button class="text-sm text-gray-600 underline">Clear all filter</button>
-            </div>
-
-            <div class="flex items-center gap-4">
-              <select class="border-none bg-white text-sm">
-                <option>Alphabetically, A-Z</option>
-              </select>
-              <div class="flex items-center gap-1">
-                <button id="firstGrid" class="p-2 border"><i class="ri-layout-2-line"></i></button>
-                <button id="scndGrid" class="p-2 border "><i class="ri-layout-3-line"></i></button>
-                <button id="thirdGrid" class="p-2 border"><i class="ri-layout-4-line"></i></button>
-                <button id="fourtGrid" class="p-2 border"><i class="ri-list-unordered"></i></button>
+              <div class="mt-2 flex items-center gap-3">
+                <div
+                  class="inline-flex items-center border rounded"
+                  id="qtyBox"
+                  data-price="60"
+                >
+                  <button class="px-2 py-1 text-[14px]" data-step="dec">
+                    –
+                  </button>
+                  <span id="qty" class="px-3 select-none text-[13px]">1</span>
+                  <button class="px-2 py-1 text-[14px]" data-step="inc">
+                    +
+                  </button>
+                </div>
+                <div class="ml-auto text-[13px] font-medium">$60.00</div>
               </div>
             </div>
           </div>
-          <div class="grid grid-cols-3  gap-6" id="product-list">
+        </div>
+
+        <div class="border-t p-5 space-y-4">
+          <div class="grid grid-cols-4 gap-3 text-center text-[12px]">
+            <button
+              class="flex flex-col items-center gap-2 rounded-md border p-3 hover:bg-gray-50"
+            >
+              <i class="ri-gift-line text-lg"></i><span>Add gift wrap</span>
+            </button>
+            <button
+              class="flex flex-col items-center gap-2 rounded-md border p-3 hover:bg-gray-50"
+            >
+              <i class="ri-edit-2-line text-lg"></i><span>Add note</span>
+            </button>
+            <button
+              class="flex flex-col items-center gap-2 rounded-md border p-3 hover:bg-gray-50"
+            >
+              <i class="ri-coupon-2-line text-lg"></i><span>Coupon</span>
+            </button>
+            <button
+              class="flex flex-col items-center gap-2 rounded-md border p-3 hover:bg-gray-50"
+            >
+              <i class="ri-truck-line text-lg"></i><span>Shipping</span>
+            </button>
+          </div>
+
+          <div class="flex items-center justify-between text-[14px]">
+            <span class="text-gray-700">Subtotal:</span>
+            <span id="subtotal" class="font-medium">$60.00</span>
+          </div>
+          <p class="text-[12px] text-gray-500">
+            Taxes and shipping calculated at checkout
+          </p>
+
+          <label class="flex items-start gap-2 text-[12px]">
+            <input id="agree" type="checkbox" class="mt-[3px] accent-black" />
+            <span
+              >I agree with the
+              <a href="#" class="underline">terms and conditions</a></span
+            >
+          </label>
+
+          <div class="flex gap-3 pt-1">
+            <button
+              id="checkoutBtn"
+              class="h-11 flex-1 rounded-md bg-black text-white text-[12px] tracking-wide disabled:opacity-50"
+            >
+              CHECK OUT
+            </button>
+            <button
+              class="h-11 flex-1 rounded-md border text-[12px] tracking-wide hover:bg-gray-50"
+            >
+              VIEW CART
+            </button>
           </div>
         </div>
       </div>
     </div>
-    </div>
-  </main>
 
-  <script type="module" src="./src/main.js"></script>
-</body>
+    <header class="bg-white border-b"></header>
 
+    <main class="py-8">
+      <div class="container mx-auto max-w-[1440px] px-4">
+        <div class="mb-8">
+          <h1 class="text-4xl font-light text-center mb-4">Products</h1>
+          <div class="text-center text-sm text-gray-600">
+            <span>Home</span>
+            <span class="mx-2">/</span>
+            <span>Products</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-12 gap-8">
+          <div class="col-span-3">
+            <div class="pt-6">
+              <div class="space-y-3">
+                <h2
+                  class="text-[24px] capitalize flex items-center justify-between"
+                >
+                  Collections <i class="ri-arrow-down-s-line"></i>
+                </h2>
+                <div
+                  class="flex justify-between flex-col items-start gap-2"
+                  id="collectionList"
+                ></div>
+
+                <button class="text-gray-500 text-sm flex items-center mt-2">
+                  + View more
+                </button>
+              </div>
+            </div>
+            <div class="pt-6">
+              <div class="space-y-3">
+                <h2
+                  class="text-[24px] capitalize flex items-center justify-between"
+                >
+                  Availability <i class="ri-arrow-down-s-line"></i>
+                </h2>
+                <div
+                  class="flex justify-between flex-col items-start gap-2"
+                  id="Availability"
+                ></div>
+              </div>
+            </div>
+            <div class="pt-6">
+              <div class="space-y-3">
+                <h2
+                  class="text-[24px] capitalize flex items-center justify-between"
+                >
+                  Color <i class="ri-arrow-down-s-line"></i>
+                </h2>
+                <div class="flex items-center gap-4" id="colors"></div>
+              </div>
+            </div>
+            <div class="pt-6">
+              <div class="space-y-3">
+                <h2
+                  class="text-[24px] capitalize flex items-center justify-between"
+                >
+                  Size <i class="ri-arrow-down-s-line"></i>
+                </h2>
+                <div class="flex items-center gap-4" id="sizes"></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-span-12 lg:col-span-9">
+            <div class="flex items-center justify-between mb-6">
+              <div class="flex items-center gap-4">
+                <div
+                  class="bg-gray-100 px-3 py-1 rounded text-sm flex items-center gap-2"
+                >
+                  $0.00-$86.00
+                  <i class="ri-close-line cursor-pointer"></i>
+                </div>
+                <button class="text-sm text-gray-600 underline">
+                  Clear all filter
+                </button>
+              </div>
+
+              <div class="flex items-center gap-4">
+                <select class="border-none bg-white text-sm">
+                  <option>Alphabetically, A-Z</option>
+                </select>
+                <div class="flex items-center gap-1">
+                  <button id="firstGrid" class="p-2 border">
+                    <i class="ri-layout-2-line"></i>
+                  </button>
+                  <button id="scndGrid" class="p-2 border">
+                    <i class="ri-layout-3-line"></i>
+                  </button>
+                  <button id="thirdGrid" class="p-2 border">
+                    <i class="ri-layout-4-line"></i>
+                  </button>
+                  <button id="fourtGrid" class="p-2 border">
+                    <i class="ri-list-unordered"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="grid grid-cols-3 gap-6" id="product-list"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+
+    <script type="module" src="./src/main.js"></script>
+  </body>
 </html>
