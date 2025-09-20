@@ -38,7 +38,6 @@ const LOGIN_PASSWORD = document.querySelector("#loginPassword");
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-// -------------------- HELPERS --------------------
 function setActiveBtn(btn){
   BTNS.forEach((b)=>{ if(!b) return; b.style.backgroundColor=""; b.style.color=""; });
   if(!btn) return;
@@ -166,7 +165,6 @@ window.addToCardProducts = function addToCardProducts(data){
 };
 
 
-// Qty +/– üçün listener
 CART_ITEMS && CART_ITEMS.addEventListener("click", (e) => {
   const row = e.target.closest("[data-id]");
   if (!row) return;
@@ -174,21 +172,16 @@ CART_ITEMS && CART_ITEMS.addEventListener("click", (e) => {
   const id = row.getAttribute("data-id");
   const item = cart.find(i => String(i.id) === String(id));
   if (!item) return;
-
-  // + düyməsi
   if (e.target.closest(".cart-inc")) {
     item.quantity = Number(item.quantity || 1) + 1;
     localStorage.setItem("cart", JSON.stringify(cart));
     return renderCart();
   }
 
-  // – düyməsi
   if (e.target.closest(".cart-dec")) {
     if ((item.quantity || 1) <= 1) {
-      // Əgər quantity = 1 idisə → məhsulu sil
       cart = cart.filter(i => String(i.id) !== String(id));
     } else {
-      // Əks halda 1 azalt
       item.quantity = Number(item.quantity || 1) - 1;
     }
     localStorage.setItem("cart", JSON.stringify(cart));
@@ -353,7 +346,6 @@ SECOND_GRID_BTN && SECOND_GRID_BTN.addEventListener("click", ()=> setGrid(SECOND
 THIRD_GRID_BTN  && THIRD_GRID_BTN.addEventListener("click", ()=> setGrid(THIRD_GRID_BTN, 4));
 FORTH_GRID_BTN  && FORTH_GRID_BTN.addEventListener("click", ()=> setGrid(FORTH_GRID_BTN, 1));
 
-// -------------------- CART DRAWER BINDINGS --------------------
 CART_OVERLAY && CART_OVERLAY.addEventListener("click", closeCartDrawer);
 CART_CLOSE   && CART_CLOSE.addEventListener("click", closeCartDrawer);
 window.addEventListener("keydown", (e)=>{
@@ -362,7 +354,6 @@ window.addEventListener("keydown", (e)=>{
   }
 });
 
-// -------------------- AUTH --------------------
 SUBMIT_REGISTER && SUBMIT_REGISTER.addEventListener("submit",(e)=>{
   e.preventDefault();
   const payload = {
